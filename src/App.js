@@ -1,25 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState, useEffect} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [textInvisible, setTextInvisible] = useState(false)
+    const [textIsDeleted, setTextIsDeleted] = useState(false)
+
+    const pressSpaceForDeleteText = (e) => {
+        if(e.keyCode === 32) setTextIsDeleted(true)
+    }
+
+    useEffect(() => {
+        document.addEventListener("keydown", pressSpaceForDeleteText);
+
+        return () => {
+            document.removeEventListener("keydown", pressSpaceForDeleteText);
+        };
+    }, []);
+
+    return (
+        <div className="App">
+            {textIsDeleted ? null :
+                <p onClick={() => setTextInvisible(!textInvisible)}
+                   className={textInvisible ? 'onClickInvisible' : ''}
+                >
+                    Георгий<br/>Начинающий web-программист / Junior Frontend Developer
+                </p>}
+        </div>
+    );
 }
 
 export default App;
